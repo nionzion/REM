@@ -1,0 +1,125 @@
+﻿<Window x:Class="REM.CreateEditApartmentDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:REM"
+        mc:Ignorable="d"
+            Title="Create/edit apartment" Height="680" Width="450" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <StackPanel Margin="20">
+        <TextBlock Text="Responsible Agent" FontSize="12" Foreground="DarkGray" Margin="5,0,0,0"/>
+        <ComboBox x:Name="AgentBox" DisplayMemberPath="Name" Margin="10"></ComboBox>
+        <StackPanel Orientation="Horizontal">
+            <local:InputTextBox x:Name="StreetBox" Width="250" Margin="5" Title="Street"/>
+            <local:InputTextBox x:Name="StreetNoBox" Width="100" Margin="5" Title="No."/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <local:InputTextBox Margin="5" x:Name="CityBox" Width="250" Title="City"/>
+            <local:InputTextBox Margin="5" x:Name="PostalCodeBox" Width="100" Title="Postal Code"/>
+        </StackPanel>
+        <local:InputTextBox Margin="5" x:Name="Area" Title="Square Area"/>
+        <local:InputTextBox Margin="5" x:Name="Floor" Title="Floor"/>
+        <local:InputTextBox Margin="5" x:Name="Rent" Title="Rent"/>
+        <local:InputTextBox Margin="5" x:Name="Rooms" Title="Rooms"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="Balcony?" Margin="5"></TextBlock>
+                <ComboBox x:Name="BalconyBox">
+                    <ComboBoxItem Content="Yes"></ComboBoxItem>
+                    <ComboBoxItem Content="No"></ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Margin="20,0">
+                <TextBlock Text="Built-in Kitchen?" Margin="5"></TextBlock>
+                <ComboBox x:Name="KitchenBox">
+                    <ComboBoxItem Content="Yes"></ComboBoxItem>
+                    <ComboBoxItem Content="No"></ComboBoxItem>
+                </ComboBox>
+            </StackPanel>
+        </StackPanel>
+
+        <Button Click="Continue_Click" BorderThickness="0" Background="Transparent" Content="Save" Foreground="White" FontSize="16" RenderTransformOrigin="0.5,0.5" Margin="0,20,0,10">
+            <Button.RenderTransform>
+                <ScaleTransform ScaleX="1" ScaleY="1">
+                </ScaleTransform>
+            </Button.RenderTransform>
+
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Name="Border" CornerRadius="5" BorderThickness="0" Focusable="False" BorderBrush="Transparent" Background="#4ca64c" Width="200" Height="50">
+                                    <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Cursor" Value="Hand"></Setter>
+                                    </Trigger>
+                                    <EventTrigger RoutedEvent="MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation From="#4ca64c" To="DarkGreen" Duration="0:0:0.05" Storyboard.TargetName="Border" Storyboard.TargetProperty="Background.Color"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="1.04" Duration="0:0:0.05"></DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation From="DarkGreen" To="#4ca64c" Duration="0:0:0.05" Storyboard.TargetName="Border" Storyboard.TargetProperty="Background.Color"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1.04" To="1" Duration="0:0:0.05"></DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+
+        <Button Click="Delete_Click" x:Name="DeleteButton" BorderThickness="0" Background="Transparent" Content="Delete" Foreground="White" FontSize="12" RenderTransformOrigin="0.5,0.5" Margin="0,5,0,5">
+            <Button.RenderTransform>
+                <ScaleTransform ScaleX="1" ScaleY="1">
+                </ScaleTransform>
+            </Button.RenderTransform>
+
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Name="Border" CornerRadius="5" BorderThickness="0" Focusable="False" BorderBrush="Transparent" Background="Red" Width="150" Height="30">
+                                    <ContentPresenter Margin="2" HorizontalAlignment="Center" VerticalAlignment="Center" RecognizesAccessKey="True"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Cursor" Value="Hand"></Setter>
+                                    </Trigger>
+                                    <EventTrigger RoutedEvent="MouseEnter">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation From="Red" To="DarkRed" Duration="0:0:0.05" Storyboard.TargetName="Border" Storyboard.TargetProperty="Background.Color"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1" To="1.04" Duration="0:0:0.05"></DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                    <EventTrigger RoutedEvent="MouseLeave">
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation From="DarkRed" To="Red" Duration="0:0:0.05" Storyboard.TargetName="Border" Storyboard.TargetProperty="Background.Color"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1.04" To="1" Duration="0:0:0.05"></DoubleAnimation>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+    </StackPanel>
+</Window>
