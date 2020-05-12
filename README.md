@@ -1,5 +1,5 @@
 # Real Estate Management (DIS 2020) - VSISP38
-[See project and Readme.md on GitHub]([https://github.com/nionzion/REM](https://github.com/nionzion/REM)) 
+[See project and Readme.md on GitHub](https://github.com/nionzion/REM) 
 
 This report describes the following content for Sheet 2 of the DIS 2020 course:
 - Prerequisites
