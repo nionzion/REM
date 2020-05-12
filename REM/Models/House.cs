@@ -1,5 +1,4 @@
-﻿using REM.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +20,7 @@ namespace REM
 
         public EstateAgent Agent { get; set; }
         public string FullStreet => $"{Street} {StreetNumber}";
+        public string Type => nameof(House);
 
     }
 }

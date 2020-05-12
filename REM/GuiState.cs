@@ -50,5 +50,17 @@ namespace REM
         {
             OnPersonsPropertyChanged("Persons");
         }
+
+        public static event PropertyChangedEventHandler OnContractsChanged = delegate { };
+        static void OnContractsPropertyChanged(string propertyName)
+        {
+            OnContractsChanged(
+                typeof(GuiState),
+                new PropertyChangedEventArgs(propertyName));
+        }
+        public static void RaiseContractsChanged()
+        {
+            OnContractsPropertyChanged("Contracts");
+        }
     }
 }

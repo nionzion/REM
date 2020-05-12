@@ -8,17 +8,17 @@ using System.Windows;
 
 namespace REM
 {
-    public class EstateTypeToTextConverter : BaseValueConverter<EstateTypeToTextConverter>
+    public class ContractToTextConverter : BaseValueConverter<ContractToTextConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if((IEstate)value is House)
+            if((IContract)value is PurchaseContract)
             {
-                return "House";
+                return "Purchase";
             }
             else
             {
-                return "Apartment";
+                return "Tenancy";
             }
         }
 

@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using Npgsql;
-using REM.Interfaces;
 using System;
 using System.CodeDom;
 using System.Collections;
@@ -429,6 +428,120 @@ namespace REM
             }
         }
 
+
+        #endregion
+
+        #region Contracts
+
+        public List<IContract> FetchContracts()
+        {
+            var purchase = new List<PurchaseContract>();
+            var tenancy = new List<TenancyContract>();
+
+            var query = "SELECT * FROM vsisp38.purchasecontract JOIN vsisp38.person ON vsisp38.purchasecontract.personId = vsisp38.person.id JOIN vsisp38.house ON vsisp38.purchasecontract.houseId = vsisp38.house.id";
+            if (Connection.State != System.Data.ConnectionState.Open)
+                Connection.Open();
+            var cmd = new NpgsqlCommand(query, Connection);
+            var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var p = new PurchaseContract();
+                p.ContractNo = reader.GetInt16(0).ToString();
+                p.Date = reader.GetDateTime(1);
+                p.Place = reader.GetString(2);
+                p.Installments = reader.GetInt16(3);
+                p.InterestRate = reader.GetDouble(4);
+                p.Person = new Person { ID = reader.GetInt16(7).ToString(), LastName = reader.GetString(8), FirstName = reader.GetString(9), Address = reader.GetString(10) };
+                p.Estate = new House { ID = reader.GetInt16(11).ToString(), City = reader.GetString(12), PostalCode = reader.GetString(13), Street = reader.GetString(14), StreetNumber = reader.GetString(15) };
+                purchase.Add(p);
+
+            }
+            Connection.Close();
+
+            var query2 = "SELECT * FROM vsisp38.tenancycontract JOIN vsisp38.person ON vsisp38.tenancycontract.personId = vsisp38.person.id JOIN vsisp38.apartment ON vsisp38.tenancycontract.apartmentId = vsisp38.apartment.id";
+
+            if (Connection.State != System.Data.ConnectionState.Open)
+                Connection.Open();
+            var cmd2 = new NpgsqlCommand(query2, Connection);
+            var reader2 = cmd2.ExecuteReader();
+            while (reader2.Read())
+            {
+                var t = new TenancyContract();
+                t.ContractNo = reader2.GetInt16(0).ToString();
+                t.Date = reader2.GetDateTime(1);
+                t.Place = reader2.GetString(2);
+                t.StartDate = reader2.GetDateTime(3);
+                t.Duration = reader2.GetInt16(4);
+                t.AdditionalCosts = reader2.GetDouble(5);
+                t.Person = new Person { ID = reader2.GetInt16(8).ToString(), LastName = reader2.GetString(9), FirstName = reader2.GetString(10), Address = reader2.GetString(11) };
+                t.Estate = new Apartment { ID = reader2.GetInt16(12).ToString(), City = reader2.GetString(13), PostalCode = reader2.GetString(14), Street = reader2.GetString(15), StreetNumber = reader2.GetString(16) };
+                tenancy.Add(t);
+            }
+            Connection.Close();
+
+            var contracts = new List<IContract>();
+            contracts.AddRange(purchase);
+            contracts.AddRange(tenancy);
+            return contracts.OrderBy(e => e.ContractNo).ToList();
+        }
+
+        public bool CreateTenancyContract(TenancyContract contract)
+        {
+            try
+            {
+                if (Connection.State != System.Data.ConnectionState.Open)
+                    Connection.Open();
+
+                var query = $"insert into vsisp38.tenancyContract (placementdate, place, startdate, duration, additional_costs, personid, apartmentid) VALUES(@placementdate, @place, @startdate, @duration, @additional_costs, @personid, @apartmentid)";
+                var cmd = new NpgsqlCommand(query, Connection);
+                cmd.Parameters.AddWithValue("placementdate", contract.Date);
+                cmd.Parameters.AddWithValue("place", contract.Place);
+                cmd.Parameters.AddWithValue("startdate", contract.StartDate);
+                cmd.Parameters.AddWithValue("duration", contract.Duration);
+                cmd.Parameters.AddWithValue("additional_costs", contract.AdditionalCosts);
+                cmd.Parameters.AddWithValue("personid", int.Parse(contract.Person.ID));
+                cmd.Parameters.AddWithValue("apartmentid", int.Parse(contract.Estate.ID));
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+                Connection.Close();
+                GuiState.RaiseContractsChanged();
+                return true;
+            }
+            catch (Exception xcpt)
+            {
+                System.Windows.MessageBox.Show(xcpt.Message);
+                return false;
+            }
+        }
+
+
+        public bool CreatePurchaseContract(PurchaseContract contract)
+        {
+            try
+            {
+                if (Connection.State != System.Data.ConnectionState.Open)
+                    Connection.Open();
+
+                var query = $"insert into vsisp38.purchasecontract (placementdate, place, installments, interest_rate, personid, houseid) VALUES(@placementdate, @place, @installments, @interest_rate, @personid, @houseid)";
+                var cmd = new NpgsqlCommand(query, Connection);
+                cmd.Parameters.AddWithValue("placementdate", contract.Date);
+                cmd.Parameters.AddWithValue("place", contract.Place);
+                cmd.Parameters.AddWithValue("installments", contract.Installments);
+                cmd.Parameters.AddWithValue("interest_rate", contract.InterestRate);
+                cmd.Parameters.AddWithValue("personid", int.Parse(contract.Person.ID));
+                cmd.Parameters.AddWithValue("houseid", int.Parse(contract.Estate.ID));
+                cmd.Prepare();
+                cmd.ExecuteNonQuery();
+                Connection.Close();
+                GuiState.RaiseContractsChanged();
+                return true;
+            }
+            catch (Exception xcpt)
+            {
+                System.Windows.MessageBox.Show(xcpt.Message);
+                return false;
+            }
+        }
 
         #endregion
     }

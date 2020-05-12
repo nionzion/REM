@@ -84,7 +84,6 @@ namespace REM
                 if (result)
                 {
                     this.DialogResult = true;
-
                 }
             }
             else
@@ -93,7 +92,6 @@ namespace REM
                 if (result)
                 {
                     this.DialogResult = true;
-
                 }
             }
         }

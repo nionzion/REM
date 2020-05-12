@@ -27,9 +27,16 @@ namespace REM
             InitializeComponent();
 
             GuiState.OnPersonsChanged += GuiState_OnPersonsChanged;
+            GuiState.OnContractsChanged += GuiState_OnContractsChanged;
 
+            Items.ItemsSource = DbAccess.Shared.FetchContracts();
             Persons.ItemsSource = DbAccess.Shared.FetchPersons();
 
+        }
+
+        private void GuiState_OnContractsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            Items.ItemsSource = DbAccess.Shared.FetchContracts();
         }
 
         private void GuiState_OnPersonsChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -40,6 +47,17 @@ namespace REM
         private void Continue_Click(object sender, RoutedEventArgs e)
         {
             new CreatePersonDialog().ShowDialog();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            new CreateTenancyContractDialog().ShowDialog();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            new CreatePurchaseContractDialog().ShowDialog();
+
         }
     }
 }
