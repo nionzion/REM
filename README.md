@@ -16,7 +16,7 @@ The application is written in C# with .NET Framework 4.6.1. Before you can run t
 > After that you can run the predefined SQL-script, which is contained in **../REM/script/create_script.sql** of the project directory.
 
 **2.** After running the application from within Visual Studio (with F5-Key), you are prompted to provide the database connection parameters, that are stored in a local .json-File within the bin/ folder of the project directory. Please provide all parameters that are requested. 
-Example: 
+> Example: 
 	- Server: localhost
 	- Port: 5432
 	- Database: dis2020
